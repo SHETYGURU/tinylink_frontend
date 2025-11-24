@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    { "source": "/:code", "destination": "https://tinylink-backend.vercel.app/:code" },
+    
+    { "source": "/api/:path*", "destination": "/api/:path*" },  
+    { "source": "/(.*)", "destination": "/" }
+  ]
+}
