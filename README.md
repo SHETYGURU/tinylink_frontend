@@ -1,5 +1,5 @@
 
-````md
+
 # TinyLink Frontend
 
 A small React + Vite + Tailwind CSS dashboard for creating and managing short links, powered by the TinyLink backend API.
@@ -11,7 +11,7 @@ A small React + Vite + Tailwind CSS dashboard for creating and managing short li
 - Open / delete links with animated UI
 - Responsive, minimal black & white theme
 
----
+
 
 ## 🏗 Tech Stack
 
@@ -21,7 +21,7 @@ A small React + Vite + Tailwind CSS dashboard for creating and managing short li
 - **TinyLink Backend API** (Node + Express)  
   - Deployed on Railway (e.g. `https://tinylink-backend-production.up.railway.app`)
 
----
+
 
 ## 📁 Project Structure (frontend)
 
