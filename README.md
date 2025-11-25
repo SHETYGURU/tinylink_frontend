@@ -1,4 +1,3 @@
-Here’s a `README.md` you can drop into your **frontend** folder 👇
 
 ````md
 # TinyLink Frontend
@@ -315,4 +314,3 @@ npm run preview
 
 ---
 
-If you want, I can also write a short **backend README** to match this, describing the API routes (`POST /api/links`, `GET /api/links?email=`, `DELETE /api/links/:code`, `GET /:code` redirect, etc.).
