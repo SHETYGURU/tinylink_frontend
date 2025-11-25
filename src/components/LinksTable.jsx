@@ -52,6 +52,10 @@ export default function LinksTable({ links, loading, onRefresh }) {
     }, 1500);
   };
 
+  const handleRefreshClick = () => {
+    if (onRefresh) onRefresh();
+  };
+
   const processedLinks = useMemo(() => {
     if (!links) return [];
     let list = [...links];
@@ -159,29 +163,47 @@ export default function LinksTable({ links, loading, onRefresh }) {
       <div className="w-full max-w-5xl mx-auto mt-6">
         {/* toolbar */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-3">
-          <div className="relative w-full sm:w-64">
-            <span className="absolute left-3 inset-y-0 flex items-center pointer-events-none text-gray-400">
-              <svg
-                className="w-4 h-4"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <circle cx="11" cy="11" r="6" />
-                <line x1="16" y1="16" x2="20" y2="20" />
-              </svg>
-            </span>
-            <input
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search by code"
-              className="w-full pl-9 pr-3 py-2 border rounded-lg text-sm bg-white shadow-sm focus:ring-2 focus:ring-blue-500"
-            />
+          {/* search + refresh */}
+          <div className="flex items-center gap-2 w-full sm:w-auto">
+            <div className="relative flex-1 sm:flex-none sm:w-64">
+              <span className="absolute left-3 inset-y-0 flex items-center pointer-events-none text-gray-400">
+                <svg
+                  className="w-4 h-4"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <circle cx="11" cy="11" r="6" />
+                  <line x1="16" y1="16" x2="20" y2="20" />
+                </svg>
+              </span>
+              <input
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Search by code"
+                className="w-full pl-9 pr-3 py-2 border rounded-lg text-sm bg-white shadow-sm focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+
+            {/* NEW refresh button */}
+            <button
+              type="button"
+              onClick={handleRefreshClick}
+              className="inline-flex items-center px-3 py-2 rounded-lg bg-white text-black border border-black hover:bg-gray-100 text-xs font-medium shadow-sm"
+            >
+              <img
+                src="/icons/refresh.gif"
+                alt="Refresh"
+                className="w-4 h-4 mr-1"
+              />
+              Refresh
+            </button>
           </div>
 
+          {/* sort */}
           <div className="flex items-center gap-2">
             <span className="text-xs sm:text-sm text-gray-600 flex items-center">
               <svg
@@ -283,7 +305,9 @@ export default function LinksTable({ links, loading, onRefresh }) {
 
                           <button
                             type="button"
-                            onClick={() => navigator.clipboard.writeText(shortUrl)}
+                            onClick={() =>
+                              navigator.clipboard.writeText(shortUrl)
+                            }
                             className="p-1 rounded-lg border border-black text-black hover:bg-gray-100 shadow-sm"
                             title="Copy short URL"
                           >
@@ -296,7 +320,14 @@ export default function LinksTable({ links, loading, onRefresh }) {
                               strokeLinecap="round"
                               strokeLinejoin="round"
                             >
-                              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                              <rect
+                                x="9"
+                                y="9"
+                                width="13"
+                                height="13"
+                                rx="2"
+                                ry="2"
+                              ></rect>
                               <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
                             </svg>
                           </button>
