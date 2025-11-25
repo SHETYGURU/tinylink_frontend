@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000';
@@ -21,6 +21,24 @@ export default function LinkForm({ onCreated, currentEmail, setCurrentEmail }) {
 
   const [showEmailPopup, setShowEmailPopup] = useState(false);
   const [emailPopupError, setEmailPopupError] = useState('');
+
+  // 🔹 On first load, try to pull email from localStorage if parent doesn't have one yet
+  useEffect(() => {
+    if (currentEmail) return;
+
+    try {
+      const stored = typeof window !== 'undefined'
+        ? window.localStorage.getItem('tinylink_email')
+        : null;
+
+      if (stored && emailRegex.test(stored)) {
+        setEmail(stored);
+        if (setCurrentEmail) setCurrentEmail(stored);
+      }
+    } catch (e) {
+      console.warn('Could not read email from localStorage', e);
+    }
+  }, [currentEmail, setCurrentEmail]);
 
   // actual create logic – only called once we have a valid email
   const doCreate = async (emailToUse) => {
@@ -91,6 +109,15 @@ export default function LinkForm({ onCreated, currentEmail, setCurrentEmail }) {
     // store email globally in parent so next time we skip popup
     if (setCurrentEmail) setCurrentEmail(email);
 
+    // 🔹 persist to localStorage
+    try {
+      if (typeof window !== 'undefined') {
+        window.localStorage.setItem('tinylink_email', email);
+      }
+    } catch (e) {
+      console.warn('Could not write email to localStorage', e);
+    }
+
     setShowEmailPopup(false);
     setEmailPopupError('');
 
@@ -104,12 +131,21 @@ export default function LinkForm({ onCreated, currentEmail, setCurrentEmail }) {
     setTimeout(() => setCopied(false), 1500);
   };
 
-  // NEW: when user clicks Logout / change email
+  // 🔹 when user clicks Logout / change email
   const handleChangeEmailClick = () => {
     if (setCurrentEmail) setCurrentEmail('');
     setEmail('');
     setEmailPopupError('');
     setShowEmailPopup(true);
+
+    // clear from localStorage
+    try {
+      if (typeof window !== 'undefined') {
+        window.localStorage.removeItem('tinylink_email');
+      }
+    } catch (e) {
+      console.warn('Could not remove email from localStorage', e);
+    }
   };
 
   return (
